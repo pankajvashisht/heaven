@@ -1,22 +1,32 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <component :is="layout()">
+      <router-view />
+    </component>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+
 
 export default {
-  name: 'app',
-  components: {
-    HelloWorld
+  name: 'App',
+  methods:{
+   
+    layout(){
+      if(this.$route.meta.layout){
+        return this.$route.meta.layout+ '-layout';
+      }else{
+         return "login-layout"
+      }
+      
+    }
   }
 }
 </script>
 
 <style>
+  @import './assets/Css/animation.css';
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

@@ -2,7 +2,7 @@
     <div>
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
             <!-- Brand -->
-            <img class="img" src="https://pbs.twimg.com/profile_images/1016305949659860993/6aOTJDBj_400x400.jpg" height="40px" width="40px"/>
+            <img class="img" src="http://18.220.10.58/logo.jpeg" height="40px" width="40px"/>
 
             <a class="navbar-brand" > Heaven</a>
 
@@ -28,7 +28,7 @@
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
-                <img v-bind:src="userInfo.profile" height="30px" width="30px" class="rounded img"  >
+                <img src="http://18.220.10.58/logo.jpeg" height="30px" width="30px" class="rounded img"  >
                 <div class="card bg-info">
             <li class="nav-item">
                     <a class="nav-link" ><b>{{userInfo.name}}</b></a>  

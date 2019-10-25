@@ -136,18 +136,14 @@ class ApiController {
       },
       fields: [
         'id',
-        'first_name',
-        'last_name',
-        'insurance_name',
-        'insurance_id',
-        'pharmacy_id',
+        'name',
         'status',
         'email',
         'phone',
         'authorization_key',
         'profile',
-        'dob',
-        'address'
+        'password',
+        'total_amount'
       ],
     });
   }

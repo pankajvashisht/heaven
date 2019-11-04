@@ -6,6 +6,7 @@ const passRoute = [
   '/forgot_password',
   '/user/login',
   '/user',
+  '/soical_login'
 ];
 const UserAuth = async (req, res, next) => {
   try {

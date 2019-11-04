@@ -59,6 +59,41 @@ class UserController extends ApiController {
     };
   }
 
+  async soicalLogin(req) {
+    const required = {
+        social_id : req.body.social_id,
+        social_token : req.body.social_token,
+        soical_type : req.body.soical_type,
+    }
+    const non_required = {
+        device_type : req.body.device_type,
+        device_token : req.body.device_token,
+        name: req.body.name,
+        email: req.body.email,
+        status: 1,
+        authorization_key : app.createToken()
+    }
+
+    let request_data = await super.vaildation(required, non_required);
+    let soical_id = await DB.find('users', 'first', {
+        conditions:{
+            or : {
+                email: request_data.email,
+                social_id: request_data.social_id,
+            }
+        },
+        fields:['id']
+    });
+    if (soical_id) {
+        request_data.id = soical_id.id;
+    }
+   let id = await DB.save('users', request_data);
+   return  {
+        message:"User login successfully",
+        data: await super.userDetails(id) 
+   }
+}
+
   async forgotPassword(req) {
     let required = {
       email: req.body.email,

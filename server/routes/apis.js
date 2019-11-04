@@ -16,6 +16,7 @@ router.post('/user', Apiresponse(user.addUser));
 router.post('/user/login', Apiresponse(user.loginUser));
 router.post('/user/edit', Apiresponse(user.updateProfile));
 router.post('/user/logout', Apiresponse(user.logout));
+router.post('/soical_login', Apiresponse(user.soicalLogin));
 router.post('/user/verifiy', Apiresponse(user.verifyOtp));
 router.post('/forgot_password', Apiresponse(user.forgotPassword));
 router.post('/user/change_password', Apiresponse(user.changePassword));

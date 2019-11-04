@@ -26,14 +26,19 @@ class UserController extends ApiController {
     };
 
     let request_data = await super.vaildation(required, non_required);
+    if (req.files && req.files.profile) {
+      request_data.profile = await app.upload_pic_with_await(req.files.profile);
+    }
     let insert_id = await DB.save('users', request_data);
     request_data.id = insert_id;
     this.mails(request_data);
+    const usersinfo = await super.userDetails(request_data.id);
+    if (usersinfo.profile.length > 0) {
+      usersinfo.profile = appURL + 'uploads/' + usersinfo.profile;
+    }
     return {
       message: 'User signup successfully',
-      data: {
-        authorization_key: request_data.authorization_key,
-      },
+      data: usersinfo
     };
   }
 

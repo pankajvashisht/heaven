@@ -6,9 +6,9 @@
       <tr>
         <th>Name</th>
         <th>Church Name</th>
-        <th>Turn Over</th>
-        <th>Sale Cost</th>
-        <th>Gross Income</th>
+        <th>Revenue</th>
+        <th>Over Head Cost</th>
+        <th>Net Income</th>
         <th>Balance</th>
 
       </tr>

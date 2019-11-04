@@ -18,7 +18,7 @@
         <td>{{trans.amount}}</td>
         <td v-html="types(trans.type)"></td>
         <td>{{trans.total}}</td>
-         <td>{{trans.created}}</td>
+         <td>{{humanRead(trans.created)}}</td>
       </tr>
     </tbody>
   </table>
@@ -63,6 +63,16 @@ export default {
             }else{
                 return '<span style="cursor:pointer" class="badge badge-pill badge-success">withdrawal</span>';
             }
+        },
+        humanRead:function(timestamp){
+          const dates = new Date(timestamp * 1000);
+          return dates.getFullYear()+" / "+ this.month(dates.getMonth()) +" / "+dates.getDay();
+        },
+        month(date){
+          if(date < 9){
+            return "0"+(date+ 1);
+          }
+          return date+ 1;
         }
     }
 }

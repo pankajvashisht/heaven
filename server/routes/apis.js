@@ -23,6 +23,7 @@ router.post('/user/change_password', Apiresponse(user.changePassword));
 router.post('/add-seed', Apiresponse(PaymentController.addSeed));
 router.post('/add-tithe', Apiresponse(PaymentController.addTithe));
 router.post('/withdrawal', Apiresponse(PaymentController.withdrawal));
+router.get('/balance', Apiresponse(PaymentController.myamount));
 router.get('/transactions/:offset([0-9]+)?', Apiresponse(PaymentController.transactions));
 router.get('/app_info', Apiresponse(user.appInfo));
 

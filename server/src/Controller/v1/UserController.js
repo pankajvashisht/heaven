@@ -21,6 +21,8 @@ class UserController extends ApiController {
     let non_required = {
       device_type: req.body.device_type,
       device_token: req.body.device_token,
+      country_code: req.body.country_code,
+      country: req.body.country,
       authorization_key: app.createToken(),
       otp: app.randomNumber(),
     };
@@ -151,7 +153,9 @@ class UserController extends ApiController {
         'authorization_key',
         'profile',
         'password',
-        'total_amount'
+        'total_amount',
+        'country_code',
+        'country'
       ],
     });
     if (login_details) {
@@ -206,7 +210,9 @@ class UserController extends ApiController {
       id: req.body.user_id,
     };
     let non_required = {
-      name: req.body.name
+      name: req.body.name,
+      country_code: req.body.country_code,
+      country: req.body.country,
     };
     let request_data = await super.vaildation(required, non_required);
     if (req.files && req.files.profile) {

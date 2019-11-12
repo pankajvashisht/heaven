@@ -143,7 +143,9 @@ class ApiController {
         'authorization_key',
         'profile',
         'password',
-        'total_amount'
+        'total_amount',
+        'country_code',
+        'country'
       ],
     });
   }

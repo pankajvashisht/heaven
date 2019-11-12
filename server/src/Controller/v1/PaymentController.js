@@ -1,7 +1,7 @@
 const ApiController = require("./ApiController");
 const Db = require("../../../libary/sqlBulider");
 const ApiError = require('../../Exceptions/ApiError');
-
+const app = require('../../../libary/CommanMethod');
 let apis = new ApiController();
 let DB = new Db();
 module.exports = {
@@ -24,7 +24,8 @@ module.exports = {
       amount:  requestData.amount,
       type_id: insert_id,
       description: requestData.description,
-      total: request.body.userInfo.total_amount+requestData.amount
+      church_name:requestData.church_name,
+      total: request.body.userInfo.total_amount+parseInt(requestData.amount)
     };
     updateUserAmount({amount:transactions.total, user_id: requestData.user_id});
     addTransacrions(transactions);
@@ -53,8 +54,9 @@ module.exports = {
       user_id: requestData.user_id,
       amount:  requestData.balance,
       type_id: insert_id,
+      church_name:requestData.church_name,
       description: requestData.description,
-      total: Request.body.userInfo.total_amount+requestData.amount
+      total: Request.body.userInfo.total_amount+parseInt(requestData.balance)
     };
     updateUserAmount({amount:transactions.total, user_id: requestData.user_id});
     addTransacrions(transactions);
@@ -62,11 +64,17 @@ module.exports = {
       message: "Tithe added successfully ",
       data: requestData
     };
+  },myamount:(Request)=> {
+    return {
+      message:"My Balance",
+      data:{balance:Request.body.userInfo.total_amount}
+    }
   },
   withdrawal: async (Request) => {
     const required = {
       amount: Request.body.amount,
       description: Request.body.description || 'no descriptions',
+      date: Request.body.date || app.currentTime,
       user_id: Request.body.user_id,
       type: 3,
     };

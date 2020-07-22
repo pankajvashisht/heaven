@@ -186,9 +186,10 @@ module.exports = {
 	filterBalance: async (Request) => {
 		const { from_date = 0, to_date = 0, type = 0 } = Request.query;
 		const { user_id } = Request.body;
-		let conditions = `where user_id = ${user_id} and created > ${app.dateToUnixTime(
+		const types = parseInt(type) === 3 ? 'date' : 'created';
+		let conditions = `where user_id = ${user_id} and ${types} > ${app.dateToUnixTime(
 			from_date
-		)} and created < ${app.dateToUnixTime(to_date)}`;
+		)} and ${types} < ${app.dateToUnixTime(to_date)}`;
 		conditions +=
 			parseInt(type) !== 0 ? ` and type = ${type}` : ` and type in (1,2)`;
 		const result = await DB.first(

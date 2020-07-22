@@ -95,7 +95,7 @@ module.exports = {
 	},
 	editTithe: async (Request) => {
 		const required = {
-			tithe_id: request.body.tithe_id,
+			tithe_id: Request.body.tithe_id,
 		};
 		const nonRequired = {
 			church_name: Request.body.church_name,
@@ -129,7 +129,7 @@ module.exports = {
 			petitions: requestData.petitions || transectionInfo.petitions,
 			amount: requestData.balance || transectionInfo.amount,
 			description: requestData.description || transectionInfo.description,
-			church_name: requestData.church_name || church_name,
+			church_name: requestData.church_name || transectionInfo.church_name,
 			total: transectionInfo.total,
 		};
 		if (requestData.balance) {

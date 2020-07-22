@@ -192,7 +192,7 @@ module.exports = {
 		conditions +=
 			parseInt(type) !== 0 ? ` and type = ${type}` : ` and type in (1,2)`;
 		const result = await DB.first(
-			`select IFNULL(sum(total), 0) as total from transactions ${conditions} `
+			`select IFNULL(sum(amount), 0) as total from transactions ${conditions} `
 		);
 		return {
 			message: 'My Balance',

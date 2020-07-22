@@ -6,7 +6,8 @@
 
 var app = require('../app');
 var debug = require('debug')('tilly:server');
-var http = require('http');
+const fs = require('fs');
+const https = require('https');
 const { config } = require('../config');
 
 /**
@@ -20,7 +21,10 @@ app.set('port', port);
  * Create HTTP server.
  */
 
-var server = http.createServer(app);
+var server = https.createServer({
+  key: fs.readFileSync('/var/www/html/heaven/server/bin/generated-private.key', 'utf8'),
+  cert: fs.readFileSync('/var/www/html/heaven/server/bin/b917c4e3de0d21d5.crt', 'utf8')
+},app);
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -29,6 +33,7 @@ var server = http.createServer(app);
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
+
 
 /**
  * Normalize a port into a number, string, or false.
@@ -81,7 +86,7 @@ function onError(error) {
  */
 
 function onListening() {
-  console.log('its working');
+  console.log('its working', port);
   var addr = server.address();
   var bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
   debug('Listening on ' + bind);

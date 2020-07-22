@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Your Transactions</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1></h1>
+    <table>
+      <% for(var i=0; i < information.length; i++) { %>
+        <tr>
+        <b>Type</b> : <%= (information[i].type === 3)? "withdrawal": (information[i].type === 1)? "Seeds" : "Tithe" %>
+        <br>
+        <b>Amount</b> : <%= (information[i].amount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');  %>
+        <br>
+        <b>Description</b> : <%= information[i].description %>
+        <br>
+        <b>Date</b> : <%= new Date(information[i].created*1000) %>
+        <br>
+        </tr>
+        <hr></hr>
+      </td>
+     
+      <% } %>
+    </table>
+  </body>
+</html>

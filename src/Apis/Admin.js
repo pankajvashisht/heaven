@@ -39,10 +39,10 @@ export const Tithe = ({ page, query, limit }) => {
 	);
 };
 export const editSeedDetails = (data) => {
-	return axios.put(`${apis}/seeds?token=${login_datails.token}`, { data });
+	return axios.put(`${apis}/seeds?token=${login_datails.token}`, data);
 };
 export const editTitheDetails = (data) => {
-	return axios.put(`${apis}/tithe?token=${login_datails.token}`, { data });
+	return axios.put(`${apis}/tithe?token=${login_datails.token}`, data);
 };
 export const Transaction = ({ page, query, limit }) => {
 	return axios.get(

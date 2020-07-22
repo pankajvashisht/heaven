@@ -14,7 +14,7 @@ module.exports = {
 			balance_based_per: request.body.balance_based_per,
 			amount: request.body.amount,
 			description: request.body.description,
-			user_id: request.body.user_id
+			user_id: request.body.user_id,
 		};
 		const requestData = await apis.vaildation(required, {});
 		const insert_id = await DB.save('seeds', requestData);
@@ -28,14 +28,119 @@ module.exports = {
 			description: requestData.description,
 			church_name: requestData.church_name,
 			total: request.body.userInfo.total_amount + parseInt(requestData.amount),
-			full_details: JSON.stringify(requestData)
+			full_details: JSON.stringify(requestData),
 		};
-		updateUserAmount({ amount: transactions.total, user_id: requestData.user_id });
+		updateUserAmount({
+			amount: transactions.total,
+			user_id: requestData.user_id,
+		});
 		addTransacrions(transactions);
 		requestData.id = insert_id;
 		return {
 			message: 'Seed added successfully ',
-			data: requestData
+			data: requestData,
+		};
+	},
+	editSeed: async (request) => {
+		const required = {
+			seed_id: request.body.seed_id,
+		};
+		const nonRequired = {
+			church_name: request.body.church_name,
+			return_expection: request.body.return_expection,
+			earth_measure: request.body.earth_measure,
+			heaven_measure: request.body.heaven_measure,
+			balance_based_per: request.body.balance_based_per,
+			amount: request.body.amount,
+			description: request.body.description,
+			user_id: request.body.user_id,
+		};
+		const requestData = await apis.vaildation(required, nonRequired);
+		const checkSeedID = await DB.find('seeds', 'first', {
+			conditions: {
+				id: requestData.seed_id,
+				user_id: requestData.user_id,
+			},
+		});
+		if (!checkSeedID) throw new ApiError('Invaild seed id', 422);
+		requestData.id = requestData.seed_id;
+		const type_id = await DB.save('seeds', requestData);
+		const transectionInfo = await DB.find('transactions', 'first', {
+			conditions: {
+				type_id,
+				user_id: requestData.user_id,
+			},
+		});
+		const transactions = {
+			id: transectionInfo.id,
+			amount: requestData.amount || transectionInfo.amount,
+			description: requestData.description || transectionInfo.description,
+			church_name: requestData.church_name || church_name,
+			total: transectionInfo.total,
+		};
+		if (requestData.amount) {
+			const revrseAmount =
+				request.body.userInfo.total_amount - transectionInfo.amount;
+			transactions.total = revrseAmount + parseInt(requestData.amount);
+		}
+		updateUserAmount({
+			amount: transactions.total,
+			user_id: requestData.user_id,
+		});
+		addTransacrions(transactions);
+		return {
+			message: 'Seed Edit successfully ',
+			data: requestData,
+		};
+	},
+	editTithe: async (Request) => {
+		const required = {
+			tithe_id: request.body.tithe_id,
+		};
+		const nonRequired = {
+			church_name: Request.body.church_name,
+			turn_over: Request.body.turn_over,
+			sale_cost: Request.body.sale_cost,
+			gross_income: Request.body.gross_income || '0',
+			time: Request.body.time,
+			petitions: Request.body.petitions,
+			balance: Request.body.balance,
+			description: Request.body.description,
+			user_id: Request.body.user_id,
+		};
+		const requestData = await apis.vaildation(required, nonRequired);
+		const checkTitheID = await DB.find('tithe', 'first', {
+			conditions: {
+				id: requestData.tithe_id,
+				user_id: requestData.user_id,
+			},
+		});
+		if (!checkTitheID) throw new ApiError('Invaild tithe_id id', 422);
+		requestData.id = requestData.tithe_id;
+		const type_id = await DB.save('tithe', requestData);
+		const transectionInfo = await DB.find('transactions', 'first', {
+			conditions: {
+				type_id,
+				user_id: requestData.user_id,
+			},
+		});
+		const transactions = {
+			id: transectionInfo.id,
+			petitions: requestData.petitions || transectionInfo.petitions,
+			amount: requestData.balance || transectionInfo.amount,
+			description: requestData.description || transectionInfo.description,
+			church_name: requestData.church_name || church_name,
+			total: transectionInfo.total,
+		};
+		if (requestData.balance) {
+			const revrseAmount =
+				request.body.userInfo.total_amount - transectionInfo.amount;
+			transactions.total = revrseAmount + parseInt(requestData.balance);
+		}
+		addTransacrions(transactions);
+		return {
+			message: 'Tithe Edit successfully ',
+			data: requestData,
 		};
 	},
 	addTithe: async (Request) => {
@@ -48,7 +153,7 @@ module.exports = {
 			petitions: Request.body.petitions,
 			balance: Request.body.balance,
 			description: Request.body.description,
-			user_id: Request.body.user_id
+			user_id: Request.body.user_id,
 		};
 		const requestData = await apis.vaildation(required, {});
 		const insert_id = await DB.save('tithe', requestData);
@@ -64,21 +169,39 @@ module.exports = {
 			church_name: requestData.church_name,
 			description: requestData.description,
 			total: Request.body.userInfo.total_amount + parseInt(requestData.balance),
-			full_details: JSON.stringify(requestData)
+			full_details: JSON.stringify(requestData),
 		};
 		//updateUserAmount({amount:transactions.total, user_id: requestData.user_id});
 		addTransacrions(transactions);
 		return {
 			message: 'Tithe added successfully ',
-			data: requestData
+			data: requestData,
 		};
 	},
 	myamount: (Request) => {
 		return {
 			message: 'My Balance',
-			data: { balance: Request.body.userInfo.total_amount }
+			data: { balance: Request.body.userInfo.total_amount },
 		};
 	},
+	filterBalance: async (Request) => {
+		const { from_date = 0, to_date = 0, type = 0 } = Request.query;
+		const { user_id } = Request.body;
+		let conditions = `where user_id = ${user_id} and created < ${app.dateToUnixTime(
+			from_date
+		)} and created > ${app.dateToUnixTime(to_date)}`;
+		if (parseInt(type) !== 0) {
+			conditions += ` and type = ${type}`;
+		}
+		const result = await DB.first(
+			`select IFNULL(sum(total), 0) as total from transactions ${conditions} `
+		);
+		return {
+			message: 'My Balance',
+			data: { balance: result.length > 0 ? result[0].total : 0 },
+		};
+	},
+
 	withdrawal: async (Request) => {
 		const required = {
 			amount: Request.body.amount,
@@ -86,7 +209,7 @@ module.exports = {
 			date: Request.body.date || app.currentTime,
 			user_id: Request.body.user_id,
 			full_details: JSON.stringify("{'no':'data'}"),
-			type: 3
+			type: 3,
 		};
 		const requestData = await apis.vaildation(required, {});
 		let users_amount = Request.body.userInfo.total_amount;
@@ -96,7 +219,7 @@ module.exports = {
 		requestData.total = users_amount - requestData.amount;
 		const updateUser = {
 			id: requestData.user_id,
-			total_amount: requestData.total
+			total_amount: requestData.total,
 		};
 		requestData.full_details = JSON.stringify({
 			church_name: '',
@@ -111,29 +234,29 @@ module.exports = {
 			return_expection: '',
 			earth_measure: '',
 			heaven_measure: '',
-			balance_based_per: ''
+			balance_based_per: '',
 		});
 		DB.save('users', updateUser);
 		const insert_id = await DB.save('transactions', requestData);
 		requestData.transactions_id = insert_id;
 		return {
 			message: 'withdrawal amount successfully ',
-			data: requestData
+			data: requestData,
 		};
 	},
 	getInApp: async (Request) => {
 		const required = {
-			gmail_account: Request.query.gmail_account
+			gmail_account: Request.query.gmail_account,
 		};
 		const requestData = await apis.vaildation(required, {});
 		const result = await DB.find('in_app_parchase', 'first', {
 			conditions: {
-				gmail_account: requestData.gmail_account
-			}
+				gmail_account: requestData.gmail_account,
+			},
 		});
 		return {
 			message: 'get successfully ',
-			data: result ? result : {}
+			data: result ? result : {},
 		};
 	},
 	addInApp: async (Request) => {
@@ -141,14 +264,14 @@ module.exports = {
 			gmail_account: Request.body.gmail_account,
 			token: Request.body.token,
 			amount: Request.body.token,
-			time: Request.body.token
+			time: Request.body.token,
 		};
 		const requestData = await apis.vaildation(required, {});
 		requestData.date = app.currentTime + 86400 * 30;
 		const result = await DB.find('in_app_parchase', 'first', {
 			conditions: {
-				gmail_account: requestData.gmail_account
-			}
+				gmail_account: requestData.gmail_account,
+			},
 		});
 		if (result) {
 			requestData.id = result.id;
@@ -156,7 +279,7 @@ module.exports = {
 		await DB.save('in_app_parchase', requestData);
 		return {
 			message: 'Add successfully',
-			data: []
+			data: [],
 		};
 	},
 
@@ -165,14 +288,14 @@ module.exports = {
 			code: Request.body.code,
 			token: Request.body.token,
 			amount: Request.body.token,
-			time: Request.body.token
+			time: Request.body.token,
 		};
 		const requestData = await apis.vaildation(required, {});
 		requestData.date = app.currentTime + 86400 * 30;
 		const result = await DB.find('in_app_parchase', 'first', {
 			conditions: {
-				gmail_account: requestData.gmail_account
-			}
+				gmail_account: requestData.gmail_account,
+			},
 		});
 		if (result) {
 			requestData.id = result.id;
@@ -180,23 +303,23 @@ module.exports = {
 		await DB.save('in_app_parchase', requestData);
 		return {
 			message: 'Add successfully',
-			data: []
+			data: [],
 		};
 	},
 	transactions: async (Request) => {
 		const required = {
 			user_id: Request.body.user_id,
 			offset: Request.params.offset || 1,
-			limit: Request.query.limit || 20
+			limit: Request.query.limit || 20,
 		};
 		const requestData = await apis.vaildation(required, {});
 		const offset = (requestData.offset - 1) * requestData.limit;
 		const result = await DB.find('transactions', 'all', {
 			conditions: {
-				user_id: requestData.user_id
+				user_id: requestData.user_id,
 			},
-			limit: [ offset, requestData.limit ],
-			orderBy: [ 'id desc' ]
+			limit: [offset, requestData.limit],
+			orderBy: ['id desc'],
 		});
 		const final = result.map((value, key) => {
 			if (value.full_details.length > 0) {
@@ -206,20 +329,20 @@ module.exports = {
 		});
 		return {
 			message: 'My transactions',
-			data: final
+			data: final,
 		};
 	},
 	deleteTransaction: async (Request) => {
 		const required = {
 			user_id: Request.body.user_id,
-			transaction_id: Request.body.transaction_id
+			transaction_id: Request.body.transaction_id,
 		};
 		const requestData = await apis.vaildation(required, {});
 		const result = await DB.find('transactions', 'first', {
 			conditions: {
 				user_id: requestData.user_id,
-				id: requestData.transaction_id
-			}
+				id: requestData.transaction_id,
+			},
 		});
 		if (!result) {
 			throw new ApiError(`Invaild transaction_id id`);
@@ -228,43 +351,45 @@ module.exports = {
 			const table = result.type == 1 ? 'seeds' : 'tithe';
 			DB.first(`delete from ${table} where id = ${requestData.type_id}`);
 		}
-		await DB.first(`delete from transactions where id = ${requestData.transaction_id}`);
+		await DB.first(
+			`delete from transactions where id = ${requestData.transaction_id}`
+		);
 		return {
 			message: 'Transactions deleted',
-			data: []
+			data: [],
 		};
 	},
 	sendTransaction: async (Request) => {
 		const user_id = Request.body.user_id;
 		const result = await DB.find('transactions', 'all', {
 			conditions: {
-				user_id
+				user_id,
 			},
 			limit: 1000,
-			orderBy: [ 'id desc' ]
+			orderBy: ['id desc'],
 		});
 		let mail = {
 			to: Request.body.userInfo.email,
 			subject: 'Your Transactions',
 			template: 'transaction',
 			data: {
-				information: result
-			}
+				information: result,
+			},
 		};
 		setTimeout(() => {
 			app.send_mail(mail);
 		}, 100);
 		return {
 			message: 'Mail send successfully',
-			data: []
+			data: [],
 		};
-	}
+	},
 };
 
 const updateUserAmount = ({ amount, user_id }) => {
 	DB.save('users', {
 		total_amount: amount,
-		id: user_id
+		id: user_id,
 	});
 	return true;
 };

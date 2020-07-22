@@ -75,7 +75,7 @@ module.exports = {
 			id: transectionInfo.id,
 			amount: requestData.amount || transectionInfo.amount,
 			description: requestData.description || transectionInfo.description,
-			church_name: requestData.church_name || church_name,
+			church_name: requestData.church_name || transectionInfo.church_name,
 			total: transectionInfo.total,
 		};
 		if (requestData.amount) {

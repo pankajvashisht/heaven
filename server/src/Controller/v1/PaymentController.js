@@ -187,12 +187,11 @@ module.exports = {
 	filterBalance: async (Request) => {
 		const { from_date = 0, to_date = 0, type = 0 } = Request.query;
 		const { user_id } = Request.body;
-		let conditions = `where user_id = ${user_id} and created < ${app.dateToUnixTime(
+		let conditions = `where user_id = ${user_id} and created > ${app.dateToUnixTime(
 			from_date
-		)} and created > ${app.dateToUnixTime(to_date)}`;
-		if (parseInt(type) !== 0) {
-			conditions += ` and type = ${type}`;
-		}
+		)} and created < ${app.dateToUnixTime(to_date)}`;
+		conditions +=
+			parseInt(type) !== 0 ? ` and type = ${type}` : ` and type in (1,2)`;
 		const result = await DB.first(
 			`select IFNULL(sum(total), 0) as total from transactions ${conditions} `
 		);

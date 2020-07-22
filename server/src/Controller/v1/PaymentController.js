@@ -133,8 +133,7 @@ module.exports = {
 			total: transectionInfo.total,
 		};
 		if (requestData.balance) {
-			const revrseAmount =
-				request.body.userInfo.total_amount - transectionInfo.amount;
+			const revrseAmount = transectionInfo.total - requestData.balance;
 			transactions.total = revrseAmount + parseInt(requestData.balance);
 		}
 		addTransacrions(transactions);

@@ -1,7 +1,7 @@
 <template>
-    <div>
-        <div class="spinner-border text-warning spinner-data "></div>
-    </div>
+  <div>
+    <div class="spinner-border text-warning spinner-data " />
+  </div>
 </template>
 
 <script>

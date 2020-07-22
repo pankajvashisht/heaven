@@ -1,9 +1,10 @@
 <template>
-    <button
-      class="btn btn-danger btn-sm"
-      @click="deleted" >
-    <slot></slot>
-    </button>
+  <button
+    class="btn btn-danger btn-sm"
+    @click="deleted"
+  >
+    <slot />
+  </button>
 </template>
 <script>
 import swal from 'sweetalert'

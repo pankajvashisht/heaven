@@ -1,5 +1,9 @@
 <template>
-    <span style="cursor:pointer" @click="updateStatus" :class="classes">{{text}}</span>
+  <span
+    style="cursor:pointer"
+    :class="classes"
+    @click="updateStatus"
+  >{{ text }}</span>
 </template>
 <script>
 import { updateUser } from '../Apis/Admin'

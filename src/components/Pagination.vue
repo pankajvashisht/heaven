@@ -1,11 +1,31 @@
 <template>
-    <div class="container">
-        <ul class="pagination justify-content-end" style="margin:20px 0">
-            <li class="page-item"><a class="page-links" @click="$emit('Previous')">Previous</a></li>
-            <li class="page-item"><a class="page-links" v-for="pageNumber in pages" v-bind:key="pageNumber" @click="$emit('enter', pageNumber)"> {{pageNumber}}</a></li>
-            <li class="page-item"><a class="page-links" @click="$emit('next')">Next</a></li>
-        </ul>
-    </div>
+  <div class="container">
+    <ul
+      class="pagination justify-content-end"
+      style="margin:20px 0"
+    >
+      <li class="page-item">
+        <a
+          class="page-links"
+          @click="$emit('Previous')"
+        >Previous</a>
+      </li>
+      <li class="page-item">
+        <a
+          v-for="pageNumber in pages"
+          :key="pageNumber"
+          class="page-links"
+          @click="$emit('enter', pageNumber)"
+        > {{ pageNumber }}</a>
+      </li>
+      <li class="page-item">
+        <a
+          class="page-links"
+          @click="$emit('next')"
+        >Next</a>
+      </li>
+    </ul>
+  </div>
 </template>
 <script>
 export default {
@@ -18,13 +38,13 @@ export default {
             pages: [],
         };
   },
-  created:function(){
-      this.setPages();
-  },
   watch: {
     posts () {
       this.setPages();
     }
+  },
+  created:function(){
+      this.setPages();
   },
   update:function(){
     this.setPages();

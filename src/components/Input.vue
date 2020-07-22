@@ -1,9 +1,18 @@
 <template>
- <input :type="type" :placeholder="placeholder" :name="name" :disabled="disable" v-model="names" :value="value" :class="classes" v-on:input="onInput"/>
+  <input
+    v-model="names"
+    :type="type"
+    :placeholder="placeholder"
+    :name="name"
+    :disabled="disable"
+    :value="value"
+    :class="classes"
+    @input="onInput"
+  >
 </template>
 <script>
 export default {
-    name:"inputs",
+    name:"Inputs",
     props:["placeholder", "classes", "type", "value", "name", "disabled"],
     data:function(){
         return{
@@ -15,8 +24,8 @@ export default {
         this.class = "form-control";
     },
     methods:{
-      onInput: function($event){
-          this.$emit('input', $event.target.value)
+      onInput: function({target:{value}}){
+          this.$emit('input', value)
       }  
     }
 

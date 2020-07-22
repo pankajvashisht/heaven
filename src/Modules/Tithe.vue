@@ -209,9 +209,8 @@ export default {
 						this.editIndex = 0;
 						swal('success', 'Tithes Updated successfully', 'success');
 					})
-					.catch((err) => {
-						const { response } = err;
-						swal('error', response.data.error_message, 'error');
+					.catch(() => {
+						swal('error', 'Something went wrong', 'error');
 					})
 					.finally(() => {
 						this.loading = false;

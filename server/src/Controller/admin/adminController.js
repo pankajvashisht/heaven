@@ -99,7 +99,7 @@ class adminController {
 				},
 			});
 			const revrseAmount = userInfo.total_amount - transectionInfo.amount;
-			transactions.total = revrseAmount + parseInt(requestData.amount);
+			transactions.total = revrseAmount + parseInt(body.balance_based_per);
 			await DB.save('users', {
 				id: checkSeed.user_id,
 				amount: transactions.total,

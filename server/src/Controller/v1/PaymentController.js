@@ -188,8 +188,8 @@ module.exports = {
 		const { user_id } = Request.body;
 		const types = parseInt(type) === 3 ? 'date' : 'created';
 		let conditions = `where user_id = ${user_id} and ${types} > ${app.dateToUnixTime(
-			from_date
-		)} and ${types} < ${app.dateToUnixTime(to_date) + 86400}`;
+			`${from_date} 00:00:00`
+		)} and ${types} < ${app.dateToUnixTime(`${to_date} 23:59:00`)}`;
 		conditions +=
 			parseInt(type) !== 0 ? ` and type = ${type}` : ` and type in (1,2)`;
 		const result = await DB.first(

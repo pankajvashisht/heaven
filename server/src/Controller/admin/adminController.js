@@ -193,7 +193,7 @@ class adminController {
 				"%'";
 		}
 		let query =
-			'select users.name,users.profile,tithe.* from tithe join users on (users.id = tithe.user_id) ' +
+			'select users.name,tithe.* from tithe join users on (users.id = tithe.user_id) ' +
 			conditions +
 			' order by id desc limit ' +
 			offset +
@@ -204,7 +204,7 @@ class adminController {
 		);
 		const result = {
 			pagination: { page: offset, total: total[0].total, limit: limit },
-			result: app.addUrl(await DB.first(query), 'profile'),
+			result: await DB.first(query),
 		};
 		return result;
 	}
@@ -223,7 +223,7 @@ class adminController {
 				"%'";
 		}
 		let query =
-			'select users.name as user_name,users.profile,alms.* from alms join users on (users.id = alms.user_id) ' +
+			'select users.name as user_name,alms.* from alms join users on (users.id = alms.user_id) ' +
 			conditions +
 			' order by id desc limit ' +
 			offset +
@@ -234,7 +234,7 @@ class adminController {
 		);
 		const result = {
 			pagination: { page: offset, total: total[0].total, limit: limit },
-			result: app.addUrl(await DB.first(query), 'profile'),
+			result: await DB.first(query),
 		};
 		return result;
 	}

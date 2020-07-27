@@ -388,14 +388,20 @@ module.exports = {
 		};
 	},
 	sendTransaction: async (Request) => {
-		const user_id = Request.body.user_id;
-		const result = await DB.find('transactions', 'all', {
-			conditions: {
-				user_id,
-			},
-			limit: 1000,
-			orderBy: ['id desc'],
-		});
+		const { type = 0, to_date = 0, from_date = 0, user_id } = Request.body;
+		const types = parseInt(type) === 3 ? 'date' : 'created';
+		let conditions = `where user_id = ${user_id}`;
+		if (to_date !== 0 && from_date !== 0) {
+			conditions += `and ${types} > ${app.dateToUnixTime(
+				`${from_date} 00:00:00`
+			)} and ${types} < ${app.dateToUnixTime(`${to_date} 23:59:00`)}`;
+		}
+		if (parseInt(type) !== 0) {
+			conditions += ` and type = ${type}`;
+		}
+		const result = await DB.first(
+			`select * from transactions ${conditions} limit 1000`
+		);
 		let mail = {
 			to: Request.body.userInfo.email,
 			subject: 'Your Transactions',

@@ -34,4 +34,8 @@ router
 	.route('/tithe/:offset([0-9]+)?/:limit([0-9]+)?')
 	.get(response(admin.tithe))
 	.put(response(admin.editTithe));
+router
+	.route('/alms/:offset([0-9]+)?/:limit([0-9]+)?')
+	.get(response(admin.alms))
+	.put(response(admin.editAlms));
 module.exports = router;

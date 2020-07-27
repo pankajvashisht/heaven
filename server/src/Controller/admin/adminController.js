@@ -223,7 +223,7 @@ class adminController {
 				"%'";
 		}
 		let query =
-			'select users.name,users.profile,alms.* from alms join users on (users.id = alms.user_id) ' +
+			'select users.name as user_name,users.profile,alms.* from alms join users on (users.id = alms.user_id) ' +
 			conditions +
 			' order by id desc limit ' +
 			offset +

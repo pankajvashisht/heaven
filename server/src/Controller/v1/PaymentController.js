@@ -262,7 +262,7 @@ module.exports = {
 		const required = {
 			user_id: Request.body.user_id,
 			name: Request.body.name,
-			amount: Request.body.token,
+			amount: Request.body.amount,
 			description: Request.body.description,
 		};
 		const requestData = await apis.vaildation(required, {});

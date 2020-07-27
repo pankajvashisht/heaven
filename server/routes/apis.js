@@ -36,6 +36,7 @@ router.get('/app_info', Apiresponse(user.appInfo));
 router.post('/in_app', Apiresponse(PaymentController.addInApp));
 router.get('/in_app', Apiresponse(PaymentController.getInApp));
 router.post('/webhook', Apiresponse(PaymentController.webHook));
+router.post('/add-alms', Apiresponse(PaymentController.addAlms));
 router
 	.route('/add-seed')
 	.post(Apiresponse(PaymentController.addSeed))

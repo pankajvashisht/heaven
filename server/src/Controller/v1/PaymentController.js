@@ -258,6 +258,35 @@ module.exports = {
 			data: result ? result : {},
 		};
 	},
+	addAlms: async (Request) => {
+		const required = {
+			user_id: Request.body.user_id,
+			name: Request.body.name,
+			amount: Request.body.token,
+			description: Request.body.description,
+		};
+		const requestData = await apis.vaildation(required, {});
+		const insert_id = await DB.save('alms', requestData);
+		requestData.id = insert_id;
+		requestData.return_expection = requestData.earth_measure = requestData.heaven_measure = requestData.balance_based_per =
+			'';
+		const transactions = {
+			type: 4,
+			user_id: requestData.user_id,
+			amount: requestData.amount,
+			type_id: insert_id,
+			church_name: requestData.name,
+			description: requestData.description,
+			total: Request.body.userInfo.total_amount + parseInt(requestData.amount),
+			full_details: JSON.stringify(requestData),
+		};
+		//updateUserAmount({amount:transactions.total, user_id: requestData.user_id});
+		addTransacrions(transactions);
+		return {
+			message: 'Alms added successfully ',
+			data: requestData,
+		};
+	},
 	addInApp: async (Request) => {
 		const required = {
 			gmail_account: Request.body.gmail_account,

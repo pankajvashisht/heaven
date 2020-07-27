@@ -315,10 +315,12 @@ class adminController {
 		totals.transactions = await DB.first(
 			'select count(id) as total from 	transactions'
 		);
+		const alms = await DB.first('select count(id) as total from alms');
 		totals.tithe = totals.tithe[0].total;
 		totals.users = totals.users[0].total;
 		totals.seeds = totals.seeds[0].total;
 		totals.transactions = totals.transactions[0].total;
+		total.alms = alms[0].total;
 		return totals;
 	}
 

@@ -320,7 +320,7 @@ class adminController {
 		totals.users = totals.users[0].total;
 		totals.seeds = totals.seeds[0].total;
 		totals.transactions = totals.transactions[0].total;
-		total.alms = alms[0].total;
+		totals.alms = alms[0].total;
 		return totals;
 	}
 

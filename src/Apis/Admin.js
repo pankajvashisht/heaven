@@ -33,6 +33,11 @@ export const Seeds = ({ page, query, limit }) => {
 		`${apis}/seeds/${page}/${limit}?token=${login_datails.token}&q=${query}`
 	);
 };
+export const GetAlms = ({ page, query, limit }) => {
+	return axios.get(
+		`${apis}/alms/${page}/${limit}?token=${login_datails.token}&q=${query}`
+	);
+};
 export const Tithe = ({ page, query, limit }) => {
 	return axios.get(
 		`${apis}/tithe/${page}/${limit}?token=${login_datails.token}&q=${query}`
@@ -43,6 +48,9 @@ export const editSeedDetails = (data) => {
 };
 export const editTitheDetails = (data) => {
 	return axios.put(`${apis}/tithe?token=${login_datails.token}`, data);
+};
+export const editAlmsDetails = (data) => {
+	return axios.put(`${apis}/alms?token=${login_datails.token}`, data);
 };
 export const Transaction = ({ page, query, limit }) => {
 	return axios.get(

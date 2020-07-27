@@ -131,6 +131,25 @@ class adminController {
 		return body;
 	}
 
+	async editAlms(Request) {
+		const { body } = Request;
+		const transectionInfo = await DB.find('transactions', 'first', {
+			conditions: {
+				type_id: body.id,
+			},
+		});
+		const transactions = {
+			id: transectionInfo.id,
+			amount: body.amount || transectionInfo.amount,
+			church_name: body.name || transectionInfo.church_name,
+			total: transectionInfo.total,
+		};
+		const revrseAmount = transectionInfo.total - body.amount;
+		transactions.total = revrseAmount + parseInt(body.amount);
+		await DB.save('transactions', transactions);
+		await DB.save('alms', body);
+		return body;
+	}
 	async seeds(req) {
 		let offset = req.params.offset !== undefined ? req.params.offset : 1;
 		let limit = req.params.limit !== undefined ? req.params.limit : 20;
@@ -182,6 +201,36 @@ class adminController {
 			limit;
 		const total = await DB.first(
 			`select count(*) as total from tithe join users on (users.id = tithe.user_id) ${conditions}`
+		);
+		const result = {
+			pagination: { page: offset, total: total[0].total, limit: limit },
+			result: app.addUrl(await DB.first(query), 'profile'),
+		};
+		return result;
+	}
+
+	async alms(req) {
+		let offset = req.params.offset !== undefined ? req.params.offset : 1;
+		let limit = req.params.limit !== undefined ? req.params.limit : 20;
+		offset = (offset - 1) * limit;
+		let conditions = '';
+		if (req.query.q.length > 0 && req.query.q !== 'undefined') {
+			conditions +=
+				" where name like '%" +
+				req.query.q +
+				"%' or email like '%" +
+				req.query.q +
+				"%'";
+		}
+		let query =
+			'select users.name,users.profile,alms.* from alms join users on (users.id = alms.user_id) ' +
+			conditions +
+			' order by id desc limit ' +
+			offset +
+			' , ' +
+			limit;
+		const total = await DB.first(
+			`select count(*) as total from alms join users on (users.id = alms.user_id) ${conditions}`
 		);
 		const result = {
 			pagination: { page: offset, total: total[0].total, limit: limit },

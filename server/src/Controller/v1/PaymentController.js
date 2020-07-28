@@ -142,6 +142,7 @@ module.exports = {
 			data: requestData,
 		};
 	},
+
 	addTithe: async (Request) => {
 		const required = {
 			church_name: Request.body.church_name,
@@ -284,6 +285,48 @@ module.exports = {
 		addTransacrions(transactions);
 		return {
 			message: 'Alms added successfully ',
+			data: requestData,
+		};
+	},
+	editAlms: async (Request) => {
+		const required = {
+			alms_id: Request.body.alms_id,
+		};
+		const nonRequired = {
+			name: Request.body.name,
+			amount: Request.body.amount,
+			description: Request.body.description,
+		};
+		const requestData = await apis.vaildation(required, nonRequired);
+		const checkAlmsID = await DB.find('alms', 'first', {
+			conditions: {
+				id: requestData.tithe_id,
+				user_id: requestData.user_id,
+			},
+		});
+		if (!checkAlmsID) throw new ApiError('Invaild alms_id id', 422);
+		requestData.id = requestData.alms_id;
+		const type_id = await DB.save('alms', requestData);
+		const transectionInfo = await DB.find('transactions', 'first', {
+			conditions: {
+				type_id,
+				user_id: requestData.user_id,
+			},
+		});
+		const transactions = {
+			id: transectionInfo.id,
+			user_id: requestData.user_id,
+			amount: requestData.amount || transectionInfo.amount,
+			church_name: requestData.name || transectionInfo.church_name,
+			description: requestData.description || transectionInfo.description,
+		};
+		if (requestData.amount) {
+			const revrseAmount = transectionInfo.total - requestData.amount;
+			transactions.total = revrseAmount + parseInt(requestData.amount);
+		}
+		addTransacrions(transactions);
+		return {
+			message: 'Alms Edit successfully ',
 			data: requestData,
 		};
 	},

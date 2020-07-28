@@ -9,7 +9,20 @@
     <table>
       <% for(var i=0; i < information.length; i++) { %>
         <tr>
-        <b>Type</b> : <%= (information[i].type === 3)? "withdrawal": (information[i].type === 1)? "Seeds" : "Tithe" %>
+        <b>Type</b> : <%= switch(information[i].type){
+          case 1:
+          "Seeds"
+          break;
+          case 2:
+          "Tithe"
+          break;
+           case 3:
+          "withdrawal"
+          break;
+          default:
+          "alams"
+          break;
+        } %>
         <br>
         <b>Amount</b> : <%= (information[i].amount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');  %>
         <br>

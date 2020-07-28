@@ -300,7 +300,7 @@ module.exports = {
 		const requestData = await apis.vaildation(required, nonRequired);
 		const checkAlmsID = await DB.find('alms', 'first', {
 			conditions: {
-				id: requestData.tithe_id,
+				id: requestData.alms_id,
 				user_id: requestData.user_id,
 			},
 		});

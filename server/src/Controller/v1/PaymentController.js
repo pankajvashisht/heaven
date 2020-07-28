@@ -392,7 +392,7 @@ module.exports = {
 		const types = parseInt(type) === 3 ? 'date' : 'created';
 		let conditions = `where user_id = ${user_id}`;
 		if (to_date !== 0 && from_date !== 0) {
-			conditions += `and ${types} > ${app.dateToUnixTime(
+			conditions += ` and ${types} > ${app.dateToUnixTime(
 				`${from_date} 00:00:00`
 			)} and ${types} < ${app.dateToUnixTime(`${to_date} 23:59:00`)}`;
 		}

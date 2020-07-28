@@ -11,17 +11,13 @@
         <tr>
         <b>Type</b> : <%= switch(information[i].type){
           case 1:
-          "Seeds"
-          break;
+            return "Seeds";
           case 2:
-          "Tithe"
-          break;
-           case 3:
-          "withdrawal"
-          break;
+            return "Tithe";
+          case 3:
+            return "withdrawal";
           default:
-          "alams"
-          break;
+            return "alams";
         } %>
         <br>
         <b>Amount</b> : <%= (information[i].amount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');  %>

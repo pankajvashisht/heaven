@@ -291,6 +291,7 @@ module.exports = {
 	editAlms: async (Request) => {
 		const required = {
 			alms_id: Request.body.alms_id,
+			user_id: Request.body.user_id,
 		};
 		const nonRequired = {
 			name: Request.body.name,

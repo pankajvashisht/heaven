@@ -12,6 +12,7 @@ module.exports = {
 			earth_measure: request.body.earth_measure,
 			heaven_measure: request.body.heaven_measure,
 			balance_based_per: request.body.balance_based_per,
+			date: request.body.date || app.currentTime,
 			amount: request.body.amount,
 			description: request.body.description,
 			user_id: request.body.user_id,
@@ -29,6 +30,7 @@ module.exports = {
 			church_name: requestData.church_name,
 			total: request.body.userInfo.total_amount + parseInt(requestData.amount),
 			full_details: JSON.stringify(requestData),
+			date: requestData.date,
 		};
 		updateUserAmount({
 			amount: transactions.total,
@@ -54,6 +56,7 @@ module.exports = {
 			amount: request.body.amount,
 			description: request.body.description,
 			user_id: request.body.user_id,
+			date: request.body.date,
 		};
 		const requestData = await apis.vaildation(required, nonRequired);
 		const checkSeedID = await DB.find('seeds', 'first', {
@@ -77,6 +80,7 @@ module.exports = {
 			description: requestData.description || transectionInfo.description,
 			church_name: requestData.church_name || transectionInfo.church_name,
 			total: transectionInfo.total,
+			date: requestData.date || transectionInfo.date,
 		};
 		if (requestData.amount) {
 			const revrseAmount =
@@ -107,6 +111,7 @@ module.exports = {
 			balance: Request.body.balance,
 			description: Request.body.description,
 			user_id: Request.body.user_id,
+			date: Request.body.date,
 		};
 		const requestData = await apis.vaildation(required, nonRequired);
 		const checkTitheID = await DB.find('tithe', 'first', {
@@ -131,6 +136,7 @@ module.exports = {
 			description: requestData.description || transectionInfo.description,
 			church_name: requestData.church_name || transectionInfo.church_name,
 			total: transectionInfo.total,
+			date: requestData.date || transectionInfo.date,
 		};
 		if (requestData.balance) {
 			const revrseAmount = transectionInfo.total - requestData.balance;
@@ -154,6 +160,7 @@ module.exports = {
 			balance: Request.body.balance,
 			description: Request.body.description,
 			user_id: Request.body.user_id,
+			date: Request.body.date || app.currentTime,
 		};
 		const requestData = await apis.vaildation(required, {});
 		const insert_id = await DB.save('tithe', requestData);
@@ -170,6 +177,7 @@ module.exports = {
 			description: requestData.description,
 			total: Request.body.userInfo.total_amount + parseInt(requestData.balance),
 			full_details: JSON.stringify(requestData),
+			date: requestData.date,
 		};
 		//updateUserAmount({amount:transactions.total, user_id: requestData.user_id});
 		addTransacrions(transactions);
@@ -187,7 +195,7 @@ module.exports = {
 	filterBalance: async (Request) => {
 		const { from_date = 0, to_date = 0, type = 0 } = Request.query;
 		const { user_id } = Request.body;
-		const types = parseInt(type) === 3 ? 'date' : 'created';
+		const types = parseInt(type) === 3 ? 'date' : 'date';
 		let conditions = `where user_id = ${user_id} and ${types} > ${app.dateToUnixTime(
 			`${from_date} 00:00:00`
 		)} and ${types} < ${app.dateToUnixTime(`${to_date} 23:59:00`)}`;
@@ -265,6 +273,7 @@ module.exports = {
 			name: Request.body.name,
 			amount: Request.body.amount,
 			description: Request.body.description,
+			date: Request.body.date || app.currentTime,
 		};
 		const requestData = await apis.vaildation(required, {});
 		const insert_id = await DB.save('alms', requestData);
@@ -280,6 +289,7 @@ module.exports = {
 			description: requestData.description,
 			total: Request.body.userInfo.total_amount + parseInt(requestData.amount),
 			full_details: JSON.stringify(requestData),
+			date: requestData.date,
 		};
 		//updateUserAmount({amount:transactions.total, user_id: requestData.user_id});
 		addTransacrions(transactions);
@@ -297,6 +307,7 @@ module.exports = {
 			name: Request.body.name,
 			amount: Request.body.amount,
 			description: Request.body.description,
+			date: Request.body.date,
 		};
 		const requestData = await apis.vaildation(required, nonRequired);
 		const checkAlmsID = await DB.find('alms', 'first', {
@@ -320,6 +331,7 @@ module.exports = {
 			amount: requestData.amount || transectionInfo.amount,
 			church_name: requestData.name || transectionInfo.church_name,
 			description: requestData.description || transectionInfo.description,
+			date: requestData.date || transectionInfo.date,
 		};
 		if (requestData.amount) {
 			const revrseAmount = transectionInfo.total - requestData.amount;
@@ -433,7 +445,7 @@ module.exports = {
 	},
 	sendTransaction: async (Request) => {
 		const { type = 0, to_date = 0, from_date = 0, user_id } = Request.body;
-		const types = parseInt(type) === 3 ? 'date' : 'created';
+		const types = parseInt(type) === 3 ? 'date' : 'date';
 		let conditions = `where user_id = ${user_id}`;
 		if (to_date !== 0 && from_date !== 0) {
 			conditions += ` and ${types} > ${app.dateToUnixTime(

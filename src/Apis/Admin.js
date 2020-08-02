@@ -1,5 +1,5 @@
 import axios from 'axios';
-const apis = `https://18.220.10.58/admins`;
+const apis = `${window.location.origin}/admins`;
 const header = {
 	headers: {
 		token: '',

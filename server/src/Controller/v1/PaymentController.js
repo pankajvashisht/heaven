@@ -28,7 +28,8 @@ module.exports = {
 			type_id: insert_id,
 			description: requestData.description,
 			church_name: requestData.church_name,
-			total: request.body.userInfo.total_amount + parseInt(requestData.amount),
+			total:
+				request.body.userInfo.total_amount + parseFloat(requestData.amount),
 			full_details: JSON.stringify(requestData),
 			date: requestData.date,
 		};
@@ -85,7 +86,7 @@ module.exports = {
 		if (requestData.amount) {
 			const revrseAmount =
 				request.body.userInfo.total_amount - transectionInfo.amount;
-			transactions.total = revrseAmount + parseInt(requestData.amount);
+			transactions.total = revrseAmount + parseFloat(requestData.amount);
 		}
 		updateUserAmount({
 			amount: transactions.total,
@@ -140,7 +141,7 @@ module.exports = {
 		};
 		if (requestData.balance) {
 			const revrseAmount = transectionInfo.total - requestData.balance;
-			transactions.total = revrseAmount + parseInt(requestData.balance);
+			transactions.total = revrseAmount + parseFloat(requestData.balance);
 		}
 		addTransacrions(transactions);
 		return {
@@ -175,7 +176,8 @@ module.exports = {
 			petitions: requestData.petitions,
 			church_name: requestData.church_name,
 			description: requestData.description,
-			total: Request.body.userInfo.total_amount + parseInt(requestData.balance),
+			total:
+				Request.body.userInfo.total_amount + parseFloat(requestData.balance),
 			full_details: JSON.stringify(requestData),
 			date: requestData.date,
 		};
@@ -195,12 +197,12 @@ module.exports = {
 	filterBalance: async (Request) => {
 		const { from_date = 0, to_date = 0, type = 0 } = Request.query;
 		const { user_id } = Request.body;
-		const types = parseInt(type) === 3 ? 'date' : 'date';
+		const types = parseFloat(type) === 3 ? 'date' : 'date';
 		let conditions = `where user_id = ${user_id} and ${types} > ${app.dateToUnixTime(
 			`${from_date} 00:00:00`
 		)} and ${types} < ${app.dateToUnixTime(`${to_date} 23:59:00`)}`;
 		conditions +=
-			parseInt(type) !== 0 ? ` and type = ${type}` : ` and type in (1,2)`;
+			parseFloat(type) !== 0 ? ` and type = ${type}` : ` and type in (1,2)`;
 		const result = await DB.first(
 			`select IFNULL(sum(amount), 0) as total from transactions ${conditions} `
 		);
@@ -287,7 +289,8 @@ module.exports = {
 			type_id: insert_id,
 			church_name: requestData.name,
 			description: requestData.description,
-			total: Request.body.userInfo.total_amount + parseInt(requestData.amount),
+			total:
+				Request.body.userInfo.total_amount + parseFloat(requestData.amount),
 			full_details: JSON.stringify(requestData),
 			date: requestData.date,
 		};
@@ -335,7 +338,7 @@ module.exports = {
 		};
 		if (requestData.amount) {
 			const revrseAmount = transectionInfo.total - requestData.amount;
-			transactions.total = revrseAmount + parseInt(requestData.amount);
+			transactions.total = revrseAmount + parseFloat(requestData.amount);
 		}
 		addTransacrions(transactions);
 		return {
@@ -445,14 +448,14 @@ module.exports = {
 	},
 	sendTransaction: async (Request) => {
 		const { type = 0, to_date = 0, from_date = 0, user_id } = Request.body;
-		const types = parseInt(type) === 3 ? 'date' : 'date';
+		const types = parseFloat(type) === 3 ? 'date' : 'date';
 		let conditions = `where user_id = ${user_id}`;
 		if (to_date !== 0 && from_date !== 0) {
 			conditions += ` and ${types} > ${app.dateToUnixTime(
 				`${from_date} 00:00:00`
 			)} and ${types} < ${app.dateToUnixTime(`${to_date} 23:59:00`)}`;
 		}
-		if (parseInt(type) !== 0) {
+		if (parseFloat(type) !== 0) {
 			conditions += ` and type = ${type}`;
 		}
 		const result = await DB.first(

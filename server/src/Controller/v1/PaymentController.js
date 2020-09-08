@@ -29,7 +29,8 @@ module.exports = {
 			description: requestData.description,
 			church_name: requestData.church_name,
 			total:
-				request.body.userInfo.total_amount + parseFloat(requestData.amount),
+				parseFloat(request.body.userInfo.total_amount) +
+				parseFloat(requestData.amount),
 			full_details: JSON.stringify(requestData),
 			date: requestData.date,
 		};

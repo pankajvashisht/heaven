@@ -28,10 +28,8 @@ module.exports = {
 			type_id: insert_id,
 			description: requestData.description,
 			church_name: requestData.church_name,
-			total: Math.round(
+			total:
 				parseFloat(request.body.userInfo.total_amount) + requestData.amount,
-				2
-			),
 			full_details: JSON.stringify(requestData),
 			date: requestData.date,
 		};

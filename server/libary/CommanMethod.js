@@ -209,7 +209,10 @@ module.exports = {
 	get currentTime() {
 		return Math.round(new Date().getTime() / 1000, 0);
 	},
-	dateToUnixTime(date) {
+	dateToUnixTime(time, hr = 23, min = 59) {
+		const date = new Date(time);
+		date.setHours(hr);
+		date.setMinutes(min);
 		return Math.round(new Date(date).getTime() / 1000, 0);
 	},
 };

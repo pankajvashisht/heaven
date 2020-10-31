@@ -212,12 +212,8 @@ module.exports = {
 	dateToUnixTime(time, hr = 23, min = 59) {
 		let date = new Date(time);
 		date = date.setHours(hr);
-		date = date.setMinutes(min);
-		console.log(
-			date.toLocaleString('en-US', {
-				timeZone: 'America/New_York',
-			})
-		);
+		//date = date.setMinutes(min);
+		console.log(date);
 		return Math.round(new Date(date).getTime() / 1000, 0);
 	},
 	convertUTC(time) {

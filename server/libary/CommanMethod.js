@@ -213,6 +213,11 @@ module.exports = {
 		const date = new Date(time);
 		date.setHours(hr);
 		date.setMinutes(min);
+		console.log(
+			date.toLocaleString('en-US', {
+				timeZone: 'America/New_York',
+			})
+		);
 		return Math.round(new Date(date).getTime() / 1000, 0);
 	},
 	convertUTC(time) {

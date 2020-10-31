@@ -454,9 +454,9 @@ module.exports = {
 		let conditions = `where user_id = ${user_id}`;
 		if (to_date !== 0 && from_date !== 0) {
 			conditions += ` and ${types} > ${app.dateToUnixTime(
-				`${from_date}`,
-				'01',
-				'20'
+				from_date,
+				'00',
+				'01'
 			)} and ${types} < ${app.dateToUnixTime(`${to_date}`, '23', '59')}`;
 		}
 		if (parseFloat(type) !== 0) {

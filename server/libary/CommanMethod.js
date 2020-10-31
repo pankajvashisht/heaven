@@ -213,7 +213,7 @@ module.exports = {
 		let date = new Date(time);
 		date = date.setHours(hr);
 		console.log(date, time);
-		return Math.round(new Date(date).getTime() / 1000, 0);
+		return Math.round(new Date(time).getTime() / 1000, 0);
 	},
 	convertUTC(time) {
 		const date = new Date(time * 1000).toLocaleString('en-US', {

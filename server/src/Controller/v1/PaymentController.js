@@ -453,11 +453,9 @@ module.exports = {
 		const types = parseFloat(type) === 3 ? 'date' : 'date';
 		let conditions = `where user_id = ${user_id}`;
 		if (to_date !== 0 && from_date !== 0) {
-			conditions += ` and ${types} > ${app.dateToUnixTime(
-				from_date,
-				'00',
-				'20'
-			)} and ${types} < ${app.dateToUnixTime(`${to_date}`, '23', '59')}`;
+			let form = app.dateToUnixTime(from_date, '00', '20');
+			let to = app.dateToUnixTime(to_date, '23', '59');
+			conditions += ` and ${types} > ${form} and ${types} < ${to}`;
 		}
 		if (parseFloat(type) !== 0) {
 			conditions += ` and type = ${type}`;

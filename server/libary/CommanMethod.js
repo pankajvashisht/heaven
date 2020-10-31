@@ -210,9 +210,9 @@ module.exports = {
 		return Math.round(new Date().getTime() / 1000, 0);
 	},
 	dateToUnixTime(time, hr = 23, min = 59) {
-		const date = new Date(time);
-		date.setHours(hr);
-		date.setMinutes(min);
+		let date = new Date(time);
+		date = date.setHours(hr);
+		date = date.setMinutes(min);
 		console.log(
 			date.toLocaleString('en-US', {
 				timeZone: 'America/New_York',

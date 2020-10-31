@@ -456,7 +456,7 @@ module.exports = {
 			conditions += ` and ${types} > ${app.dateToUnixTime(
 				`${from_date}`,
 				'00',
-				'00'
+				'20'
 			)} and ${types} < ${app.dateToUnixTime(`${to_date}`, '23', '59')}`;
 		}
 		if (parseFloat(type) !== 0) {

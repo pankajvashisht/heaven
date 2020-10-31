@@ -215,4 +215,10 @@ module.exports = {
 		date.setMinutes(min);
 		return Math.round(new Date(date).getTime() / 1000, 0);
 	},
+	convertUTC(time) {
+		const date = new Date(time * 1000).toLocaleString('en-US', {
+			timeZone: 'America/New_York',
+		});
+		return Math.round(new Date(date).getTime() / 1000, 0);
+	},
 };

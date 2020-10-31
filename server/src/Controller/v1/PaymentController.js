@@ -18,6 +18,7 @@ module.exports = {
 			user_id: request.body.user_id,
 		};
 		const requestData = await apis.vaildation(required, {});
+		requestData.date = app.convertUTC(requestData.date);
 		const insert_id = await DB.save('seeds', requestData);
 		requestData.turn_over = requestData.sale_cost = requestData.gross_income = requestData.time = requestData.petitions = requestData.balance =
 			'';

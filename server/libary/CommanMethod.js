@@ -214,7 +214,7 @@ module.exports = {
 		date = date.setHours(hr);
 		//date = date.setMinutes(min);
 		console.log(date);
-		return Math.round(new Date(date).getTime() / 1000, 0);
+		return this.convertUTC(Math.round(new Date(date).getTime() / 1000, 0));
 	},
 	convertUTC(time) {
 		const date = new Date(time * 1000).toLocaleString('en-US', {

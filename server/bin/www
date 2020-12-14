@@ -8,6 +8,7 @@ var app = require('../app');
 var debug = require('debug')('tilly:server');
 const fs = require('fs');
 const https = require('https');
+const http = require('http');
 const { config } = require('../config');
 
 /**
@@ -26,10 +27,13 @@ var server = https.createServer({
   cert: fs.readFileSync('/var/www/html/heaven/server/bin/b917c4e3de0d21d5.crt', 'utf8')
 },app);
 
+const httpServer = http.createServer(app);
 /**
  * Listen on provided port, on all network interfaces.
  */
-
+httpServer.listen(4002);
+httpServer.on('error', onError);
+httpServer.on('listening', onListening);
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);

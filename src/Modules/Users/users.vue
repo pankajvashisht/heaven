@@ -1,56 +1,111 @@
 <template>
-
-    <div class="container animated slideInUp">
-      <div class="row">
-        <div class="col-12">
-        <Tophead> <div class="float-left"> Users </div> 
-        <template v-slot="button" > <button class="btn btn-info float-right" @click="addUser"> Add User</button></template>
+  <div class="container animated slideInUp">
+    <div class="row">
+      <div class="col-12">
+        <Tophead>
+          <div class="float-left">
+            Users
+          </div> 
+          <template>
+            <button
+              class="btn btn-info float-right"
+              @click="addUser"
+            >
+              Add User
+            </button>
+          </template>
         </Tophead>
-        </div>
+      </div>
     </div>
     <div class="row">
-    <div class="col-12">
-     <table id="dtBasicExample" class="table table-striped">
-  <thead>
-    <tr>
-      <th class="th-sm">No 
-      </th>
-      <th class="th-sm">Name
-      </th>
-      <th class="th-sm">Email
-      </th>
-      <th class="th-sm">Phone
-      </th>
-      <th class="th-sm">Balance
-      </th>
-      <th class="th-sm">Status
-      </th>
-      <th class="th-sm">Action </th>
-    </tr>
-  </thead>
-  <tbody>
-    <Spinner v-show="loading" class="spiiner"/>
-    <tr v-for="(user,key) in all_users" v-bind:key="user.id">
-      <td>{{key+1}}</td>
-      <td>{{user.name}}</td>
-      <td>{{user.email}}</td>
-      <td>{{user.phone}}</td>
-      <td>{{user.total_amount}}</td>
-      <td><StatusUpdate models='users' :info="user" /></td>
-      <td><button @click="tiths(user.id)" class="btn btn-primary btn-sm"> Tiths </button> &nbsp; <button @click="seed(user.id)" class="btn btn-success btn-sm"> Seeds </button> &nbsp;
-      <router-link class="btn btn-info btn-sm" :to="{ name: 'edit-user', params: { user } }">
-        Edit
-      </router-link>&nbsp; 
-      <DeleteData @onDelete="deleted(key)" models='users' :info="user.id"> Delete </DeleteData></td>
-    </tr>
-  </tbody>
-</table>
-  
+      <div class="col-12">
+        <table
+          id="dtBasicExample"
+          class="table table-striped"
+        >
+          <thead>
+            <tr>
+              <th class="th-sm">
+                No 
+              </th>
+              <th class="th-sm">
+                Name
+              </th>
+              <th class="th-sm">
+                Email
+              </th>
+              <th class="th-sm">
+                Phone
+              </th>
+              <th class="th-sm">
+                Balance
+              </th>
+              <th class="th-sm">
+                Status
+              </th>
+              <th class="th-sm">
+                Action
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <Spinner
+              v-show="loading"
+              class="spiiner"
+            />
+            <tr
+              v-for="(user,key) in all_users"
+              :key="user.id"
+            >
+              <td>{{ ((currentPage * 20)-20)+key+1 }}</td>
+              <td>{{ user.name }}</td>
+              <td>{{ user.email }}</td>
+              <td>{{ user.phone }}</td>
+              <td>{{ user.total_amount }}</td>
+              <td>
+                <StatusUpdate
+                  models="users"
+                  :info="user"
+                />
+              </td>
+              <td>
+                <button
+                  class="btn btn-primary btn-sm"
+                  @click="tiths(user.id)"
+                >
+                  Tiths
+                </button> &nbsp; <button
+                  class="btn btn-success btn-sm"
+                  @click="seed(user.id)"
+                >
+                  Seeds
+                </button> &nbsp;
+                <router-link
+                  class="btn btn-info btn-sm"
+                  :to="{ name: 'edit-user', params: { user } }"
+                >
+                  Edit
+                </router-link>&nbsp; 
+                <DeleteData
+                  models="users"
+                  :info="user.id"
+                  @onDelete="deleted(key)"
+                >
+                  Delete
+                </DeleteData>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <Pagination
+        :limit="20"
+        :total="total_record"
+        :displayed="5"
+        @handle-click="clickCallback"
+      />
     </div>
-    <Pagination :posts="all_users" :limit="20" @Previous="prev" @next="next" :total="total_record"/>
-    </div>
-    </div>
-    
+  </div>
 </template>
 
 <script>
@@ -78,6 +133,13 @@ export default {
         search:"",
         limit:20,
         total_record:0,
+        pageCount: 0,
+        currentPage : 1,
+      }
+    },
+    watch:{
+      pages:function(no){
+        return no+1;
       }
     },
     mounted:function(){
@@ -86,17 +148,13 @@ export default {
         const  {data}  = response;
         this.all_users = data.data.result;
         this.total_record = data.data.pagination.total;
+        this.pageCount = Math.round(data.data.pagination.total/20, 0);
         this.loading = false;
       }).catch(err => {
         this.loading = false;
         const {response} = err;
         swal('error', response.data.error_message, 'error');
       });
-    },
-    watch:{
-      pages:function(no){
-        return no+1;
-      }
     },
     methods:{
       addUser : function(){
@@ -111,10 +169,22 @@ export default {
       seed:function(user_id){
         this.$router.push({name: 'seeds', query: { id: user_id }})
       },
-      prev:function(){
-        //alert();
-      },next:function(){
-        //alert();
+     clickCallback :function(page){
+        this.currentPage = page;
+         const {limit,search} = this;
+         this.loading = true;
+         this.all_users = [];
+          UserList({page,search,limit}).then(response => {
+            const  {data}  = response;
+            this.all_users = data.data.result;
+            this.total_record = data.data.pagination.total;
+            this.pageCount = Math.round(data.data.pagination.total/20, 0);
+            this.loading = false;
+          }).catch(err => {
+            this.loading = false;
+            const {response} = err;
+            swal('error', response.data.error_message, 'error');
+          });
       }
     }
 }

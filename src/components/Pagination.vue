@@ -7,21 +7,21 @@
       <li class="page-item">
         <a
           class="page-links"
-          @click="$emit('Previous')"
+          @click="previous"
         >Previous</a>
       </li>
       <li class="page-item">
         <a
           v-for="pageNumber in pages"
           :key="pageNumber"
-          class="page-links"
-          @click="$emit('enter', pageNumber)"
+          :class="{ active: pageNumber === currentPage, 'page-links': 'page-links' }"
+          @click="numberClick(pageNumber)"
         > {{ pageNumber }}</a>
       </li>
       <li class="page-item">
         <a
           class="page-links"
-          @click="$emit('next')"
+          @click="next"
         >Next</a>
       </li>
     </ul>
@@ -30,16 +30,20 @@
 <script>
 export default {
     name:"Pagination",
-    props:{"total": {type:Number,default:10},"limit" : Number,"currentPage":Number},
+    props:[ "total", 'limit', "displayed"],
     data() {
         return {
             page: Math.round(this.total/this.limit,0),
             perPage: this.limit || 20,
             pages: [],
+            currentPage: 1,
         };
   },
   watch: {
-    posts () {
+    total: function() {
+      this.setPages();
+    },
+    currentPage: function(){
       this.setPages();
     }
   },
@@ -52,10 +56,32 @@ export default {
   methods: {
     setPages () {
       this.page =  Math.round(this.total/this.limit,0);
-      for (let index = 1; index <= this.page; index++) {
-        this.pages.push(index);
-      }
+      if (this.displayed > this.page ) this.displayed = this.page; 
+      let start = this.currentPage - Math.floor(this.displayed / 2); 
+      start = Math.max(start, 1);
+      start = Math.min(start, 1 + this.page - this.displayed); 
+      this.pages = Array.from({length: this.displayed }, (el, i) => start + i);
     },
+    numberClick: function(page){
+      this.currentPage = page;
+      this.setPages();
+      this.$emit('handle-click', page)
+    },
+    previous: function(){
+      if(this.currentPage === 1){
+        return false;
+      }
+      this.currentPage = this.currentPage -1;
+      this.$emit('handle-click', this.currentPage)
+    },
+    next: function(){
+      if(this.currentPage === this.page){ 
+        return false; 
+      } 
+      this.currentPage = this.currentPage +1;
+      this.$emit('handle-click', this.currentPage)
+    }
+
   },
   
   
@@ -66,5 +92,13 @@ export default {
     position: relative;
     padding: 0.5rem 0.75rem;
     border: 1px solid #dee2e6;
+    cursor: pointer;
 }
+.active{
+  background-color: dodgerblue; 
+  color: white !important;
+  border: 1px solid dodgerblue;
+
+}
+
 </style>

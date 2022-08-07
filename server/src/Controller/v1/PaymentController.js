@@ -202,7 +202,7 @@ module.exports = {
 		const types = parseFloat(type) === 3 ? 'date' : 'date';
 		let conditions = `where user_id = ${user_id} and ${types} > ${app.dateToUnixTime(
 			`${from_date} 00:00:00`
-		) - 43200} and ${types} < ${app.dateToUnixTime(`${to_date} 23:59:00`)}`;
+		) - 14400} and ${types} < ${app.dateToUnixTime(`${to_date} 23:59:00`)}`;
 		conditions +=
 			parseFloat(type) !== 0 ? ` and type = ${type}` : ` and type in (1,2)`;
 		const result = await DB.first(

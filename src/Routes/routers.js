@@ -29,10 +29,7 @@ router.beforeEach((to, from, next) => {
         next();
       }
     }
-  } else if (
-    to.matched.some((record) => record.meta.web) &&
-    to.matched.some((record) => record.meta.requiresAuth)
-  ) {
+  } else if (to.matched.some((record) => record.meta.web)) {
     if (localStorage.getItem("usersInfo") === null) {
       return next({
         path: "/",

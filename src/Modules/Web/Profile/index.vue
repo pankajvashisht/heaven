@@ -5,6 +5,10 @@
       <a class="navbar-brand">Heaven</a>
       <div>
         {{ name }}
+        <div class="logout d-flex ml-2" @click="logoutAccount">
+          <i class="fa fa-sign-out" aria-hidden="true"></i>
+          <h6>Logout</h6>
+        </div>
       </div>
     </nav>
     <div class="container">
@@ -56,6 +60,7 @@ export default {
       status: "",
       profile: "",
       authorizationToken,
+      loading: false,
     };
   },
 
@@ -84,6 +89,19 @@ export default {
   },
 
   methods: {
+    logoutAccount: function() {
+      Alert({
+        title: `Are you sure want logout?`,
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      }).then((willDelete) => {
+        if (willDelete) {
+          localStorage.clear();
+          this.$router.push("/");
+        }
+      });
+    },
     removeAccount: function() {
       Alert({
         title: `Are you sure want delete?`,
@@ -93,6 +111,7 @@ export default {
         dangerMode: true,
       }).then((willDelete) => {
         if (willDelete) {
+          this.loading = true;
           axios
             .delete(`${window.location.origin}/apis/v1/remove-user-account`, {
               headers: {
@@ -104,11 +123,15 @@ export default {
                 icon: "success",
               });
               localStorage.clear();
+              this.$router.push("/");
             })
             .catch((err) => {
               Alert("Something went wrong", {
                 icon: "error",
               });
+            })
+            .finally(() => {
+              this.loading = false;
             });
         } else {
           Alert("Process Cancel");
@@ -185,5 +208,8 @@ hr {
 .image {
   height: 350px;
   object-fit: fill;
+}
+.logout {
+  cursor: pointer;
 }
 </style>

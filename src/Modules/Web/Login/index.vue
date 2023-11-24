@@ -7,7 +7,7 @@
     </div>
 
     <form @submit.prevent="handleSubmit">
-      <h3>Login Here</h3>
+      <h3>Login</h3>
 
       <label for="username">Email</label>
       <input

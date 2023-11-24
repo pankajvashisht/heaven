@@ -9,9 +9,13 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    if (localStorage.getItem("users") == null) {
+    console.log("fuck", to);
+    if (
+      localStorage.getItem("users") == null &&
+      to.matched.some((record) => record.meta.authAdmin)
+    ) {
       next({
-        path: "/login",
+        path: "/admin/login",
         params: { nextUrl: to.fullPath },
       });
     } else {
@@ -26,12 +30,17 @@ router.beforeEach((to, from, next) => {
         next();
       }
     }
-  } else if (to.matched.some((record) => record.meta.web)) {
-    if (localStorage.getItem("usersInfo") == null) {
-      next();
-    } else {
-      next({ name: "profile" });
+  } else if (
+    to.matched.some((record) => record.meta.web) &&
+    to.matched.some((record) => record.meta.requiresAuth)
+  ) {
+    if (localStorage.getItem("usersInfo") === null) {
+      return next({
+        path: "/",
+        params: { nextUrl: to.fullPath },
+      });
     }
+    return next({ name: "profile" });
   } else {
     next();
   }

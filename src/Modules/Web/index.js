@@ -3,9 +3,10 @@ export default [
   {
     path: "/",
     name: "login",
-    component: () => import(/* webpackChunkName: login" */ "./Profile"),
+    component: () => import(/* webpackChunkName: login" */ "./Login"),
     meta: {
       web: true,
+      requiresAuth: false,
     },
   },
   {
@@ -14,6 +15,7 @@ export default [
     component: () => import(/* webpackChunkName: dashboard" */ "./Profile"),
     meta: {
       web: true,
+      requiresAuth: true,
     },
   },
   {

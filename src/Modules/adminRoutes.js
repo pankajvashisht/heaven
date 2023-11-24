@@ -16,8 +16,9 @@ export default [
     component: () =>
       import(/* webpackChunkName: dashboard" */ "./dashboard.vue"),
     meta: {
-      adminAuth: true,
+      authAdmin: true,
       layout: "dashboard",
+      requiresAuth: true,
     },
     children: [
       {

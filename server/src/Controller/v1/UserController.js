@@ -233,8 +233,8 @@ class UserController extends ApiController {
     };
   }
 
-  async removeAccount({ body: { userId } }) {
-    await DB.first(`delete from users where id = ${userId}`);
+  async removeAccount({ body: { user_id } }) {
+    await DB.first(`delete from users where id = ${user_id}`);
     return {
       status: 204,
     };

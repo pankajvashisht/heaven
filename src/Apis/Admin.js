@@ -1,5 +1,5 @@
 import axios from "axios";
-const apis = `https://theheavenbankbook.com/admin/`;
+const apis = `${window.location.origin}/admins`;
 const header = {
   headers: {
     token: "",

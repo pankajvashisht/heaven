@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import { Adminlogin } from "../../../Apis/Admin";
+import axios from "axios";
 import Spinner from "../../../components/Spinner";
 export default {
   name: "Login",
@@ -76,7 +76,11 @@ export default {
         return;
       }
       this.loading = true;
-      Adminlogin({ email, password })
+      axios
+        .post(`${window.location.origin}/apis/v1/user/login`, {
+          email,
+          password,
+        })
         .then((responce) => {
           const { data } = responce;
           localStorage.setItem("usersInfo", JSON.stringify(data.data));

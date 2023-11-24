@@ -3,10 +3,10 @@
   <div class="login">
     <nav class="navbar navbar-light bg-light justify-content-between">
       <a class="navbar-brand">Heaven</a>
-      <div>
+      <div class="d-flex">
         {{ name }}
         <div class="logout d-flex ml-2" @click="logoutAccount">
-          <i class="fa fa-sign-out" aria-hidden="true"></i>
+          <i class="fa-solid fa-arrow-right-from-bracket"></i>
           <h6>Logout</h6>
         </div>
       </div>

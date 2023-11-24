@@ -32,7 +32,7 @@ export default [
         },
       },
       {
-        path: "users",
+        path: "/users",
         component: () => import("./Users/users"),
         name: "users",
         meta: {

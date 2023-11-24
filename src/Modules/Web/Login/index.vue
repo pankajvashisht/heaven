@@ -50,6 +50,7 @@
 <script>
 import axios from "axios";
 import Spinner from "../../../components/Spinner";
+import swal from "sweetalert";
 export default {
   name: "Login",
   components: {
@@ -89,8 +90,14 @@ export default {
           this.loading = false;
         })
         .catch((err) => {
-          const { responce } = err;
-          alert(responce);
+          const { response } = err;
+          if (response.data.error_message) {
+            swal(response.data.error_message, {
+              icon: "error",
+            });
+          }
+        })
+        .finally(() => {
           this.loading = false;
         });
     },

@@ -75,7 +75,7 @@ export default {
         phone,
         total_amount,
         profile,
-        authorization,
+        authorization_key,
       } = JSON.parse(userInfo);
       this.name = name;
       this.email = email;
@@ -84,7 +84,7 @@ export default {
       this.phone = phone;
       this.balance = total_amount;
       this.profile = profile;
-      this.authorizationToken = authorization;
+      this.authorizationToken = authorization_key;
     }
   },
 

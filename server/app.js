@@ -1,19 +1,19 @@
-const createError = require('http-errors');
-const express = require('express');
-const path = require('path');
-const cookieParser = require('cookie-parser');
-const logger = require('morgan');
-const useragent = require('express-useragent');
-const bodyParser = require('body-parser');
-const fileUpload = require('express-fileupload');
-const process = require('process');
+const createError = require("http-errors");
+const express = require("express");
+const path = require("path");
+const cookieParser = require("cookie-parser");
+const logger = require("morgan");
+const useragent = require("express-useragent");
+const bodyParser = require("body-parser");
+const fileUpload = require("express-fileupload");
+const process = require("process");
 
 global.appRoot = path.resolve(__dirname);
 
-const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
-const adminRouter = require('./routes/admin');
-const apiRouter = require('./routes/apis');
+const indexRouter = require("./routes/index");
+const usersRouter = require("./routes/users");
+const adminRouter = require("./routes/admin");
+const apiRouter = require("./routes/apis");
 
 const app = express();
 
@@ -23,59 +23,62 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 // file upload file
 app.use(
-	fileUpload({
-		createParentPath: true
-	})
+  fileUpload({
+    createParentPath: true,
+  })
 );
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "ejs");
 
-app.use(logger('dev'));
+app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, '../dist')));
-app.use(express.static(path.join(__dirname, 'public')));
-app.get('/admin/*', (req, res) => {
-	res.sendFile(path.resolve(__dirname, '../dist/index.html'));
+app.use(express.static(path.join(__dirname, "../dist")));
+app.use(express.static(path.join(__dirname, "public")));
+app.get("/", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "../dist/index.html"));
+});
+app.get("/admin/*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "../dist/index.html"));
 });
 
 app.use(function(req, res, next) {
-	global.appURL = req.protocol + '://' + req.get('host') + '/';
-	next();
+  global.appURL = req.protocol + "://" + req.get("host") + "/";
+  next();
 });
 
-app.use('/admins', adminRouter);
-app.use('/', indexRouter);
-app.use('/apis/v1/', apiRouter);
-app.use('/users', usersRouter);
+app.use("/admins", adminRouter);
+app.use("/", indexRouter);
+app.use("/apis/v1/", apiRouter);
+app.use("/users", usersRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-	next(createError(404));
+  next(createError(404));
 });
 
 // error handler
 app.use(function(err, req, res) {
-	// set locals, only providing error in development
-	res.locals.message = err.message;
-	res.locals.error = req.app.get('env') === 'development' ? err : {};
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get("env") === "development" ? err : {};
 
-	// render the error page
-	res.status(err.status || 500);
-	res.render('error');
+  // render the error page
+  res.status(err.status || 500);
+  res.render("error");
 });
 
 // set path root path
 
 process
-	.on('unhandledRejection', (reason, p) => {
-		console.error(reason, 'Unhandled Rejection at Promise', p);
-	})
-	.on('uncaughtException', (err) => {
-		console.error(err, 'Uncaught Exception thrown');
-		// process.exit(1);
-	});
+  .on("unhandledRejection", (reason, p) => {
+    console.error(reason, "Unhandled Rejection at Promise", p);
+  })
+  .on("uncaughtException", (err) => {
+    console.error(err, "Uncaught Exception thrown");
+    // process.exit(1);
+  });
 
 module.exports = app;

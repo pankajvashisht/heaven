@@ -56,6 +56,7 @@ export default {
   },
   data() {
     return {
+      loading: false,
       email: "",
       name: "",
       id: "",
@@ -63,8 +64,7 @@ export default {
       balance: "",
       status: "",
       profile: "",
-      authorizationToken,
-      loading: false,
+      authorizationToken: "",
     };
   },
 
@@ -106,7 +106,7 @@ export default {
         }
       });
     },
-    removeAccount: function() {
+    removeAccount: () => {
       Alert({
         title: `Are you sure want delete?`,
         text: `Are you sure want to delete your account?`,
@@ -119,7 +119,7 @@ export default {
           axios
             .delete(`${window.location.origin}/apis/v1/remove-user-account`, {
               headers: {
-                Authorization: this.authorizationToken,
+                authorization_key: this.authorizationToken,
               },
             })
             .then(() => {

@@ -81,7 +81,7 @@ export default {
   methods: {
     logout: function() {
       localStorage.clear();
-      this.$router.push({ name: "login" });
+      this.$router.push({ name: "admin/login" });
     },
   },
 };

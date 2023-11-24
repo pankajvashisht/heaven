@@ -1,10 +1,16 @@
 <template>
   <div class="container animated slideInUp">
     <div class="row">
-      <div style="cursor:pointer" class="col-md-4 col-xl-3" @click="redirect('users')">
+      <div
+        style="cursor:pointer"
+        class="col-md-4 col-xl-3"
+        @click="redirect('users')"
+      >
         <div class="card bg-c-blue order-card">
           <div class="card-block">
-            <h6 class="m-b-20">Users</h6>
+            <h6 class="m-b-20">
+              Users
+            </h6>
             <h2 class="text-right">
               <i class="fa fa-users f-left" />
               <span>{{ users }}</span>
@@ -17,10 +23,16 @@
         </div>
       </div>
 
-      <div style="cursor:pointer" class="col-md-4 col-xl-3" @click="redirect('tithe')">
+      <div
+        style="cursor:pointer"
+        class="col-md-4 col-xl-3"
+        @click="redirect('tithe')"
+      >
         <div class="card bg-c-green order-card">
           <div class="card-block">
-            <h6 class="m-b-20">Tithe</h6>
+            <h6 class="m-b-20">
+              Tithe
+            </h6>
             <h2 class="text-right">
               <i class="fa fa-rocket f-left" />
               <span>{{ tithe }}</span>
@@ -32,10 +44,16 @@
           </div>
         </div>
       </div>
-      <div style="cursor:pointer" class="col-md-4 col-xl-3" @click="redirect('seeds')">
+      <div
+        style="cursor:pointer"
+        class="col-md-4 col-xl-3"
+        @click="redirect('seeds')"
+      >
         <div class="card bg-c-yellow order-card">
           <div class="card-block">
-            <h6 class="m-b-20">Seeds</h6>
+            <h6 class="m-b-20">
+              Seeds
+            </h6>
             <h2 class="text-right">
               <i class="fa fa-refresh f-left" />
               <span>{{ seeds }}</span>
@@ -47,10 +65,16 @@
           </div>
         </div>
       </div>
-      <div style="cursor:pointer" class="col-md-4 col-xl-3" @click="redirect('alms')">
+      <div
+        style="cursor:pointer"
+        class="col-md-4 col-xl-3"
+        @click="redirect('alms')"
+      >
         <div class="card bg-c-yellow order-card">
           <div class="card-block">
-            <h6 class="m-b-20">Alms</h6>
+            <h6 class="m-b-20">
+              Alms
+            </h6>
             <h2 class="text-right">
               <i class="fa fa-refresh f-left" />
               <span>{{ alms }}</span>
@@ -63,10 +87,16 @@
         </div>
       </div>
 
-      <div style="cursor:pointer" class="col-md-4 col-xl-3" @click="redirect('transaction')">
+      <div
+        style="cursor:pointer"
+        class="col-md-4 col-xl-3"
+        @click="redirect('transaction')"
+      >
         <div class="card bg-c-pink order-card">
           <div class="card-block">
-            <h6 class="m-b-20">Transactions</h6>
+            <h6 class="m-b-20">
+              Transactions
+            </h6>
             <h2 class="text-right">
               <i class="fa fa-credit-card f-left" />
               <span>{{ transactions }}</span>
@@ -102,7 +132,7 @@ export default {
       loading: true,
     };
   },
-  created: function () {
+  created: function() {
     dashBaord()
       .then((response) => {
         const { data } = response.data;
@@ -120,14 +150,14 @@ export default {
       });
   },
   methods: {
-    redirect: function (path) {
+    redirect: function(path) {
       this.$router.push({ name: path });
     },
   },
 };
 </script>
 
-<style  scoped>
+<style scoped>
 .order-card {
   color: #fff;
 }

@@ -98,7 +98,7 @@ export default {
         .then((responce) => {
           const { data } = responce;
           localStorage.setItem("users", JSON.stringify(data.data));
-          this.returnUrl = this.$route.query.returnUrl || "/dashboard";
+          this.returnUrl = this.$route.query.returnUrl || "/admin/dashboard";
           this.$router.push(this.returnUrl);
           this.loading = false;
         })

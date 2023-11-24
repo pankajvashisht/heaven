@@ -1,43 +1,47 @@
 <!-- eslint-disable vue/html-self-closing -->
 <template>
-  <div class="login">
-    <nav class="navbar navbar-light bg-light justify-content-between">
-      <a class="navbar-brand">Heaven</a>
-      <div class="d-flex">
-        {{ name }}
-        <div class="logout d-flex ml-2" @click="logoutAccount">
-          <i class="fa-solid fa-arrow-right-from-bracket"></i>
-          <h6>Logout</h6>
+  <div>
+    <div class="login">
+      <nav class="navbar navbar-light bg-light justify-content-between">
+        <a class="navbar-brand">Heaven</a>
+        <div class="d-flex">
+          {{ name }}
+          <div class="logout d-flex ml-2" @click="logoutAccount">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            <h6>Logout</h6>
+          </div>
         </div>
-      </div>
-    </nav>
-    <div class="container">
-      <div class="card">
-        <img
-          src="https://avatars.githubusercontent.com/u/51825251?v=4"
-          alt="John"
-          style="width:100%"
-          class="image"
-        />
-        <div class="user-info">
-          <h1>{{ name }}</h1>
-          <p class="title"></p>
-          <p>Email: {{ email }}</p>
-          <hr />
-          <p>Phone: {{ phone }}</p>
-          <hr />
-          <p>Wallet Balance: {{ balance }}</p>
-          <hr />
-          <p>
-            Status: <span class="badge badge-pill badge-success"> Active </span>
-          </p>
+      </nav>
+      <div class="container">
+        <div class="card">
+          <img
+            src="https://avatars.githubusercontent.com/u/51825251?v=4"
+            alt="John"
+            style="width:100%"
+            class="image"
+          />
+          <div class="user-info">
+            <h1>{{ name }}</h1>
+            <p class="title"></p>
+            <p>Email: {{ email }}</p>
+            <hr />
+            <p>Phone: {{ phone }}</p>
+            <hr />
+            <p>Wallet Balance: {{ balance }}</p>
+            <hr />
+            <p>
+              Status:
+              <span class="badge badge-pill badge-success"> Active </span>
+            </p>
+          </div>
+          <button class="btn btn-danger" @click="removeAccount">
+            Remove Account
+          </button>
         </div>
-        <button class="btn btn-danger" @click="removeAccount">
-          Remove Account
-        </button>
-        <Spinner v-show="loading" />
       </div>
     </div>
+
+    <Spinner v-show="loading" />
   </div>
 </template>
 

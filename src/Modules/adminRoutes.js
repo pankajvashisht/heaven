@@ -14,10 +14,9 @@ export default [
     path: "/admin",
     name: "admin",
     component: () =>
-      import(/* webpackChunkName: dashboard" */ "./dashboard.vue"),
+      import(/* webpackChunkName: dashboard" */ "./commonAdmin.vue"),
     meta: {
       authAdmin: true,
-      layout: "dashboard",
       requiresAuth: true,
     },
     children: [
@@ -27,17 +26,15 @@ export default [
         name: "home",
         meta: {
           authAdmin: true,
-          layout: "dashboard",
           requiresAuth: true,
         },
       },
       {
-        path: "/users",
+        path: "users",
         component: () => import("./Users/users"),
         name: "users",
         meta: {
           authAdmin: true,
-          layout: "dashboard",
           requiresAuth: true,
         },
       },
@@ -47,7 +44,6 @@ export default [
         name: "add-user",
         meta: {
           authAdmin: true,
-          layout: "dashboard",
           requiresAuth: true,
         },
       },
@@ -58,7 +54,6 @@ export default [
         props: true,
         meta: {
           authAdmin: true,
-          layout: "dashboard",
           requiresAuth: true,
         },
       },
@@ -69,7 +64,6 @@ export default [
         props: true,
         meta: {
           authAdmin: true,
-          layout: "dashboard",
           requiresAuth: true,
         },
       },
@@ -80,7 +74,6 @@ export default [
         props: true,
         meta: {
           authAdmin: true,
-          layout: "dashboard",
           requiresAuth: true,
         },
       },
@@ -91,7 +84,6 @@ export default [
         props: true,
         meta: {
           authAdmin: true,
-          layout: "dashboard",
           requiresAuth: true,
         },
       },
@@ -101,7 +93,6 @@ export default [
         name: "information",
         meta: {
           authAdmin: true,
-          layout: "dashboard",
           requiresAuth: true,
         },
       },
@@ -111,7 +102,6 @@ export default [
         name: "transaction",
         meta: {
           authAdmin: true,
-          layout: "dashboard",
           requiresAuth: true,
         },
       },

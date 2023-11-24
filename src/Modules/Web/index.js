@@ -10,7 +10,7 @@ export default [
     },
   },
   {
-    path: "/profile",
+    path: "/user/profile",
     name: "profile",
     component: () => import(/* webpackChunkName: dashboard" */ "./Profile"),
     meta: {

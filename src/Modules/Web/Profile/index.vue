@@ -66,6 +66,7 @@ export default {
 
   created() {
     const userInfo = localStorage.getItem("userInfo");
+    console.log(userInfo);
     if (userInfo) {
       const {
         name,

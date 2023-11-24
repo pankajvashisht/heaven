@@ -41,7 +41,7 @@ router.beforeEach((to, from, next) => {
     }
     return next({ name: "profile/user" });
   } else if (
-    ["/login"].includes(to.path) &&
+    includes(to.path) === "/" &&
     localStorage.getItem("usersInfo") !== null
   ) {
     return next({ name: "profile/user" });

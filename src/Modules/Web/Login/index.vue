@@ -85,7 +85,7 @@ export default {
         .then((responce) => {
           const { data } = responce;
           localStorage.setItem("usersInfo", JSON.stringify(data.data));
-          this.returnUrl = this.$route.query.returnUrl || "/user/profile";
+          this.returnUrl = this.$route.query.returnUrl || "/profile/user";
           this.$router.push(this.returnUrl);
           this.loading = false;
         })

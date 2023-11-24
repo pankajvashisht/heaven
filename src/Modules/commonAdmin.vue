@@ -75,13 +75,13 @@ export default {
       logo: require("../assets/logo.png"),
     };
   },
-  mounted: function() {
+  created: function() {
     this.userInfo = JSON.parse(this.authuser);
   },
   methods: {
     logout: function() {
       localStorage.clear();
-      this.$router.push({ name: "admin/login" });
+      this.$router.push({ name: "/admin/login" });
     },
   },
 };

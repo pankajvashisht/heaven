@@ -106,41 +106,38 @@ export default {
         }
       });
     },
-    removeAccount: () => {
-      Alert({
+    removeAccount: async function() {
+      const willDelete = await Alert({
         title: `Are you sure want delete?`,
         text: `Are you sure want to delete your account?`,
         icon: "warning",
         buttons: true,
         dangerMode: true,
-      }).then((willDelete) => {
-        if (willDelete) {
-          this.loading = true;
-          axios
-            .delete(`${window.location.origin}/apis/v1/remove-user-account`, {
-              headers: {
-                authorization_key: this.authorizationToken,
-              },
-            })
-            .then(() => {
-              Alert("Your Account have been removed", {
-                icon: "success",
-              });
-              localStorage.clear();
-              this.$router.push("/");
-            })
-            .catch((err) => {
-              Alert("Something went wrong", {
-                icon: "error",
-              });
-            })
-            .finally(() => {
-              this.loading = false;
-            });
-        } else {
-          Alert("Process Cancel");
-        }
       });
+      if (willDelete) {
+        this.loading = true;
+        axios
+          .delete(`${window.location.origin}/apis/v1/remove-user-account`, {
+            headers: {
+              authorization_key: this.authorizationToken,
+            },
+          })
+          .then(() => {
+            Alert("Your Account have been removed", {
+              icon: "success",
+            });
+            localStorage.clear();
+            this.$router.push("/");
+          })
+          .catch((err) => {
+            Alert("Something went wrong", {
+              icon: "error",
+            });
+          })
+          .finally(() => {
+            this.loading = false;
+          });
+      }
     },
   },
 };

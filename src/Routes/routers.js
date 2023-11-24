@@ -40,8 +40,6 @@ router.beforeEach((to, from, next) => {
       });
     }
     return next({ name: "profile/user" });
-  } else if (to.path === "/" && localStorage.getItem("usersInfo") !== null) {
-    return next({ name: "profile/user" });
   } else {
     next();
   }

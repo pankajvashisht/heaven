@@ -39,7 +39,12 @@ router.beforeEach((to, from, next) => {
         params: { nextUrl: to.fullPath },
       });
     }
-    return next({ name: "profile" });
+    return next({ name: "profile/user" });
+  } else if (
+    ["/login"].includes(to.path) &&
+    localStorage.getItem("usersInfo") !== null
+  ) {
+    return next({ name: "profile/user" });
   } else {
     next();
   }

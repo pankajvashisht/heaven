@@ -31,12 +31,13 @@ router.beforeEach((to, from, next) => {
     }
   } else if (to.matched.some((record) => record.meta.web)) {
     if (localStorage.getItem("usersInfo") === null) {
-      return next({
+      next({
         path: "/",
         params: { nextUrl: to.fullPath },
       });
+    } else {
+      next({ name: "profile/user" });
     }
-    return next({ name: "profile/user" });
   } else {
     next();
   }

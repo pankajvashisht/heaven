@@ -29,14 +29,17 @@ router.beforeEach((to, from, next) => {
         next();
       }
     }
-  } else if (to.matched.some((record) => record.meta.web)) {
+  } else if (
+    to.matched.some((record) => record.meta.web) &&
+    to.matched.some((record) => record.meta.requiresAuth)
+  ) {
     if (localStorage.getItem("usersInfo") === null) {
       next({
         path: "/",
         params: { nextUrl: to.fullPath },
       });
     } else {
-      next({ name: "profile/user" });
+      next();
     }
   } else {
     next();

@@ -22,21 +22,21 @@ app.set('port', port);
  * Create HTTP server.
  */
 
-var server = https.createServer({
-  key: fs.readFileSync('/var/www/html/heaven/server/bin/generated-private.key', 'utf8'),
-  cert: fs.readFileSync('/var/www/html/heaven/server/bin/b917c4e3de0d21d5.crt', 'utf8')
-},app);
+// var server = https.createServer({
+//   key: fs.readFileSync('/var/www/html/heaven/server/bin/generated-private.key', 'utf8'),
+//   cert: fs.readFileSync('/var/www/html/heaven/server/bin/b917c4e3de0d21d5.crt', 'utf8')
+// },app);
 
 const httpServer = http.createServer(app);
 /**
  * Listen on provided port, on all network interfaces.
  */
-httpServer.listen(4002);
+httpServer.listen(port);
 httpServer.on('error', onError);
 httpServer.on('listening', onListening);
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
+// server.listen(port);
+// server.on('error', onError);
+// server.on('listening', onListening);
 
 
 /**

@@ -434,12 +434,14 @@ module.exports = {
 			},
 		});
 		if (!result) {
-			throw new ApiError(`Invaild transaction_id id`);
+			throw new ApiError(`Invalid transaction_id id`);
 		}
+
 		if (result.type == 1 || result.type == 2) {
 			const table = result.type == 1 ? 'seeds' : 'tithe';
 			DB.first(`delete from ${table} where id = ${requestData.type_id}`);
 		}
+
 		await DB.first(
 			`delete from transactions where id = ${requestData.transaction_id}`
 		);
@@ -452,18 +454,21 @@ module.exports = {
 		const { type = 0, to_date = 0, from_date = 0, user_id } = Request.body;
 		const types = parseFloat(type) === 3 ? 'date' : 'date';
 		let conditions = `where user_id = ${user_id}`;
+
 		if (to_date !== 0 && from_date !== 0) {
-			let form = app.dateToUnixTime(from_date, '00', '20');
-			let to = app.dateToUnixTime(to_date, '23', '59');
+			const form = app.dateToUnixTime(from_date, '00', '20');
+			const to = app.dateToUnixTime(to_date, '23', '59');
 			conditions += ` and ${types} > ${form} and ${types} < ${to}`;
 		}
+
 		if (parseFloat(type) !== 0) {
 			conditions += ` and type = ${type}`;
 		}
 		const result = await DB.first(
 			`select * from transactions ${conditions} limit 1000`
 		);
-		let mail = {
+
+		const mail = {
 			to: Request.body.userInfo.email,
 			subject: 'Your Transactions',
 			template: 'transaction',
@@ -471,13 +476,14 @@ module.exports = {
 				information: result,
 			},
 		};
+		
 		setTimeout(() => {
 			app.send_mail(mail);
 		}, 100);
 		return {
 			message: 'Mail send successfully',
 			data: [],
-		};
+		};	
 	},
 };
 

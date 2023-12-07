@@ -469,7 +469,7 @@ module.exports = {
 		);
 
 		const mail = {
-			to: Request.body.userInfo.email,
+			to: 'sharmapankaj688@gmail.com', //Request.body.userInfo.email,
 			subject: 'Your Transactions',
 			template: 'transaction',
 			data: {
